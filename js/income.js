@@ -25,7 +25,10 @@ async function request (endpoint, method, data) {
     },
     body: data ? JSON.stringify(data) : null
 })
-return await response.json()
+if (response.status === 200) {
+    
+    return await response.json()
+}
 }
 
 async function income() {
@@ -47,10 +50,10 @@ async function income() {
         btn.classList.add('btn', 'x-btn')
         btn.setAttribute('id', element.id)
         btn.onclick = async () => {
-			request('/income', 'DELETE', {
-				id: element.id
-			})
-		}
+            request('/income', 'DELETE', {
+                id: element.id
+            })
+        }
         
         tr.appendChild(th)
         tr.appendChild(thh)
@@ -59,23 +62,28 @@ async function income() {
         tr.appendChild(thhhhh)
         
         elTable.appendChild(tr)
-
+        
         
     });
 }
 
+var today = new Date();
+var dd = String(today.getDate()).padStart(2, '0');
+var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+var yyyy = today.getFullYear();
+
+today = mm + '/' + dd + '/' + yyyy;
+console.log(today);
 
 
 elForm.addEventListener('submit', async function (evt) {
     evt.preventDefault()
+
+    console.log('asd');
     
     if (elsumma.value === '' && elmaqsad.value === '') {
         
-    } else if(elmaqsad.value === ''){
-        
-
     } else {
-        
         
         let incomeData = {
             purpose: elmaqsad.value,
@@ -84,18 +92,33 @@ elForm.addEventListener('submit', async function (evt) {
         
         let response = await request('/income', 'POST', incomeData)
         
-        if (response.status === 200) {
-            income()
-        }
+        let [ tr, th, thh, thhh, thhhh, thhhhh, btn] = createElement('tr', 'th', 'th', 'th', 'th', 'th', 'button')        
+        
+        th.textContent = index + 1
+        thh.textContent = elmaqsad.value
+        thhh.textContent = elsumma.value
+        thhhh.textContent = today
+
+        console.log(thhhh);
+        
+        thhhhh.classList.add('test')
+        thhhhh.appendChild(btn)
+        btn.textContent = "O'chirish"
+        btn.classList.add('btn', 'x-btn')
+        btn.setAttribute('id', element.id)
+        
+        tr.appendChild(th)
+        tr.appendChild(thh)
+        tr.appendChild(thhh)
+        tr.appendChild(thhhh)
+        tr.appendChild(thhhhh)
+        
+        elTable.appendChild(tr)
+        
         
         elsumma.value = ''
         elmaqsad.value = ''
     } 
 })
-
-
-
-
-
 
 income()
