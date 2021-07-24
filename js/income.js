@@ -76,9 +76,13 @@ today = mm + '/' + dd + '/' + yyyy;
 console.log(today);
 
 
+
 elForm.addEventListener('submit', async function (evt) {
     evt.preventDefault()
 
+    let [ tr, th, thh, thhh, thhhh, thhhhh, btn] = createElement('tr', 'th', 'th', 'th', 'th', 'th', 'button')        
+
+    
     console.log('asd');
     
     if (elsumma.value === '' && elmaqsad.value === '') {
@@ -91,21 +95,25 @@ elForm.addEventListener('submit', async function (evt) {
         }
         
         let response = await request('/income', 'POST', incomeData)
+        let responseGET = await request('/income', 'GET')
+        console.log(responseGET);
+
+        let testmest = responseGET.forEach((el, index) => {
+            const testmest = index;
+        })
+
         
-        let [ tr, th, thh, thhh, thhhh, thhhhh, btn] = createElement('tr', 'th', 'th', 'th', 'th', 'th', 'button')        
+        // if (response.status === 200) {
         
-        th.textContent = index + 1
+        // th.textContent = 
         thh.textContent = elmaqsad.value
         thhh.textContent = elsumma.value
         thhhh.textContent = today
-
-        console.log(thhhh);
         
         thhhhh.classList.add('test')
         thhhhh.appendChild(btn)
         btn.textContent = "O'chirish"
         btn.classList.add('btn', 'x-btn')
-        btn.setAttribute('id', element.id)
         
         tr.appendChild(th)
         tr.appendChild(thh)
@@ -114,6 +122,7 @@ elForm.addEventListener('submit', async function (evt) {
         tr.appendChild(thhhhh)
         
         elTable.appendChild(tr)
+        // }
         
         
         elsumma.value = ''
